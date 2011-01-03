@@ -1,0 +1,9 @@
+# globs, anywhere
+*.pyc
+
+# specific dirs
+docs/_build
+dist
+
+# specific files
+MANIFEST

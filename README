@@ -1,7 +1,7 @@
 python-systemd
 --------------
 
-Python layer to work with systemd dbus interface.
+Python wrapper to work with systemd dbus interface.
 
 
 Requirements
