@@ -1,11 +1,5 @@
 python-systemd
---------------
+==============
 
 Python wrapper to work with systemd dbus interface.
 
-
-Requirements
-------------
-
- * python-dbus
- * systemd
