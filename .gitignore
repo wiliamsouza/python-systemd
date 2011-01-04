@@ -4,6 +4,7 @@
 # specific dirs
 docs/_build
 dist
+build
 
 # specific files
 MANIFEST
