@@ -1,5 +1,8 @@
 import unittest
 
+import signal
+import dbus
+
 from systemd.manager import Manager
 from systemd.exceptions import SystemdError
 from systemd.unit import Unit
@@ -27,7 +30,6 @@ class ManagerTest(unittest.TestCase):
     #        'NoSuchUnit(Unit %s is not loaded.)' % NO_EXIST_SERVICE,
     #        self.manager.get_unit, NO_EXIST_SERVICE)
     
-    #TODO: How to know a valid and not valid PID to run this test
     #def test_get_unit_by_pid(self):
     #    #Put this variables to a file named tests_settings.py
     #    EXIST_PID = 0
@@ -45,12 +47,13 @@ class ManagerTest(unittest.TestCase):
     #def test_k_exec(self):
     #    self.manager.k_exec()
 
-    # What is the accepted arguments to manager interface method KillUnit?
-    # I'm doing KillUnit('sshd.service', 'all', 'replace', 15)
-    # Whats is the correct arguments to signal for this method
-    def test_kill_unit(self):
-        self.manager.kill_unit('sshd.service', 'main', 'fail', 15)
 
+    #def test_kill_unit(self):
+    #    self.manager.kill_unit('sshd.service', 'main', 'control-group', 9)
+    #    self.manager.kill_unit('sshd.service', 'control', 'control-group', 9)
+    #    self.manager.kill_unit('sshd.service', 'all', 'control-group', 9)
+    #    self.manager.kill_unit('sshd.service', 'all', 'process-group', 9)
+    #    self.manager.kill_unit('sshd.service', 'all', 'process', 9)
     #def test_list_jobs(self):
     #    self.assertIsInstance(self.manager.list_jobs(), tuple)
 
@@ -68,15 +71,13 @@ class ManagerTest(unittest.TestCase):
     #def test_reboot(self):
     #    self.manager.reboot()
 
-    #TODO:What this do?
     #def test_reexecute(self):
     #    self.manager.reexecute()
 
-    #TODO:Correct test error
     #def test_reload(self):
     #    self.manager.reload()
     """
-    #TODO:Check the timestamp to ensure the unit was reloaded or restarted
+
     def test_reload_or_restart_unit(self):
         self.assertIsInstance(
             self.manager.reload_or_restart_unit('sshd.service', 'fail'),
@@ -84,10 +85,7 @@ class ManagerTest(unittest.TestCase):
         self.assertIsInstance(
             self.manager.reload_or_restart_unit('sshd.service', 'replace'),
             Job)
-        self.assertIsInstance(
-            self.manager.reload_or_restart_unit('sshd.service', 'isolate'),
-            Job)
-
+    
     def test_reload_or_try_restart_unit(self):
         self.assertIsInstance(
             self.manager.reload_or_try_restart_unit('sshd.service', 'fail'),
@@ -104,18 +102,15 @@ class ManagerTest(unittest.TestCase):
     #def test_reload_unit(self):
     #    self.assertIsInstance(
     #        self.manager.reload_unit('sshd.service', 'fail'), Job)
-        #self.assertIsInstance(
-        #    self.manager.reload_unit('sshd.service', 'replace'),e Job)
+    #    self.assertIsInstance(
+    #        self.manager.reload_unit('sshd.service', 'replace'),e Job)
 
-    #TODO: How to test this
     # def test_reset_failed(self):
     #     self.manager.reset_failed()
 
-    #TODO: How to test this
     #def test_reset_failed_unit(self):
     #    self.manager.reset_failed_unit()
 
-    #TODO:Check the timestamp to ensure the unit was reloaded or restarted
     #def test_restart_unit(self):
     #    self.assertIsInstance(
     #        self.manager.restart_unit('sshd.service', 'fail'), Job)
@@ -139,7 +134,6 @@ class ManagerTest(unittest.TestCase):
     #    self.assertIsInstance(
     #        self.manager.start_unit('sshd.service', 'emergency'), Job)
 
-    #TODO: How to test this
     #def test_start_unit_replace(self):
     #    self.manager.start_unit_replace(old_unit, new_unit, mode)
 
@@ -149,7 +143,6 @@ class ManagerTest(unittest.TestCase):
     #    self.assertIsInstance(
     #        self.manager.stop_unit('sshd.service', 'replace'), Job)
 
-    #TODO: How to test this
     #def test_subscribe(self):
     #    self.manager.subscribe()
 
