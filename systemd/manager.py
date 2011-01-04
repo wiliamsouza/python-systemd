@@ -1,3 +1,22 @@
+#
+# Copyright (c) 2010 Mandriva
+#
+# This file is part of python-systemd.
+#
+# python-systemd is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation; either version 2.1 of
+# the License, or (at your option) any later version.
+#
+# python-systemd is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 import dbus
 
 from systemd.unit import Unit, UnitInfo
@@ -17,7 +36,6 @@ class Manager(object):
             'org.freedesktop.systemd1.Manager')
         self.__properties()
 
-    #TODO:Put this method is a more generic class because its used by others class
     def __properties(self):
         interface = dbus.Interface(
             self.__proxy,
@@ -112,8 +130,20 @@ class Manager(object):
             self.__interface.KExec()
         except dbus.exceptions.DBusException, error:
             raise SystemdError(error)
-
+    
     def kill_unit(self, name, who, mode, signal):
+        """Reload or restart unit.
+        
+        @param name: Unit name (ie: network.service).
+        @param who: Must be one of main, control or all.
+        @param mode: Must be one of control-group, process-group, process.
+        @param signal: Must be one of the well know signal number such  as
+        SIGTERM(15), SIGINT(2), SIGSTOP(19) or SIGKILL(9).
+        
+        @raise SystemdError: Raised when no unit is found with the given name.
+        
+        @rtype: L{systemd.job.Job}
+        """
         try:
             self.__interface.KillUnit(name, who, mode, signal)
         except dbus.exceptions.DBusException, error:
@@ -230,9 +260,10 @@ class Manager(object):
         """Reload  unit.
         
         @param name: Unit name (ie: network.service).
-        @param mode: Must be one of fail, replace or isolate.
+        @param mode: Must be one of fail, replace.
         
-        @raise SystemdError: Raised when no job is found with the giveno ID.
+        @raise SystemdError: Raised when no unit is found with the given name or
+        mode is not corret.
         
         @rtype: L{systemd.job.Job}
         """
