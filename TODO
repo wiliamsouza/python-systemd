@@ -1,11 +1,16 @@
+====
 TODO
 ====
+
+This is todo file for python-systemd.
 
 CODE
 ====
 
  * Pass some methods(__properties) to a more generic class(systemd.core.Core).
+
  * __properties methods of systemd.job.Job is with error.
+
  * Improve the exceptions mechanism.
 
 TESTS

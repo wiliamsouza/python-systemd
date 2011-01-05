@@ -1,10 +1,11 @@
-python-systemd install
-======================
+=======
+Install
+=======
 
-run python setup.py install.
+basicaly run python setup.py install.
 
 Requirements
-------------
+============
 
  * python-dbus
  * systemd

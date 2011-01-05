@@ -1,5 +1,10 @@
+==============
 python-systemd
 ==============
 
-Python wrapper to work with systemd dbus interface.
+python-systemd python wrapper for `systemd`_ system and session manager dbus
+interfaces.
+
+
+.. systemd: http://www.freedesktop.org/wiki/Software/systemd
 
