@@ -132,7 +132,7 @@ class Manager(object):
             raise SystemdError(error)
     
     def kill_unit(self, name, who, mode, signal):
-        """Reload or restart unit.
+        """Kill unit.
         
         @param name: Unit name (ie: network.service).
         @param who: Must be one of main, control or all.
@@ -245,7 +245,7 @@ class Manager(object):
         @param name: Unit name (ie: network.service).
         @param mode: Must be one of fail, replace or isolate.
         
-        @raise SystemdError: Raised when no job is found with the giveno ID.
+        @raise SystemdError: Raised when no unit is found with the given name.
         
         @rtype: L{systemd.job.Job}
         """
@@ -292,7 +292,7 @@ class Manager(object):
         @param name: Unit name (ie: network.service).
         @param mode: Must be one of fail, replace or isolate.
         
-        @raise SystemdError: Raised when no job is found with the giveno ID.
+        @raise SystemdError: Raised when no unit is found with the given name.
         
         @rtype: L{systemd.job.Job}
         """
@@ -315,7 +315,7 @@ class Manager(object):
         @param name: Unit name (ie: network.service).
         @param mode: Must be one of fail or replace.
         
-        @raise SystemdError: Raised when no job is found with the given name.
+        @raise SystemdError: Raised when no unit is found with the given name.
         
         @rtype: L{systemd.job.Job}
         """
@@ -333,7 +333,7 @@ class Manager(object):
         @param new_unit: New unit.
         @param mode: Must be one of fail, replace, isolate, rescue or emergency.
         
-        @raise SystemdError: Raised when no job is found with the giveno ID.
+        @raise SystemdError: Raised when no unit is found with the given name.
         
         @rtype: L{systemd.job.Job}
         """
@@ -350,7 +350,7 @@ class Manager(object):
         @param name: Unit name (ie: network.service).
         @param mode:  Must be one of fail or replace.
         
-        @raise SystemdError: Raised when no job is found with the giveno ID.
+        @raise SystemdError: Raised when no unit is found with the given name.
         
         @rtype: L{systemd.job.Job}
         """
