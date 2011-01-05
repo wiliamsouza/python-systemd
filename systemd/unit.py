@@ -20,6 +20,8 @@
 import dbus
 
 from systemd.property import Property
+from systemd.exceptions import SystemdError
+from systemd.job import Job
 
 class Unit(object):
     """Abstraction class to org.freedesktop.systemd1.Unit interface"""
@@ -46,38 +48,142 @@ class Unit(object):
         setattr(self, 'properties', attr_property)
 
     def kill(self, who, mode, signal):
-        self.__interface.Kill(who, mode, signal)
+        """Kill unit.
+        
+        @param who: Must be one of main, control or all.
+        @param mode: Must be one of control-group, process-group, process.
+        @param signal: Must be one of the well know signal number such  as
+        SIGTERM(15), SIGINT(2), SIGSTOP(19) or SIGKILL(9).
+        
+        @raise SystemdError: Raised when who, mode or signal are invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            self.__interface.KillUnit(who, mode, signal)
+        except dbus.exceptions.DBusException, error:
+            print error
+            raise SystemdError(error)
 
     def reload(self, mode):
-        job_path = self.__interface.Reload(mode)
-        return str(job_path)
+        """Reload unit.
+        
+        @param mode: Must be one of fail, replace or isolate.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            job_path = self.__interface.Reload(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
+
+
 
     def reload_or_restart(self, mode):
-        job_path = self.__interface.ReloadOrRestart(mode)
-        return str(job_path)
+        """Reload or restart unit.
+        
+        @param mode: Must be one of fail, replace or isolate.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            job_path = self.__interface.ReloadOrRestart(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
     def reload_or_try_restart(self, mode):
-        job_path = self.__interface.ReloadOrTryRestart(mode)
-        return str(job_path)
+        """Reload or try restart unit.
+        
+        @param mode: Must be one of fail, replace or isolate.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            job_path = self.__interface.ReloadOrTryRestart(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
     def reset_failed(self):
-        self.__interface.ResetFailed()
+        try:
+            self.__interface.ResetFailed()
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)        
 
     def restart(self, mode):
-        job_path = self.__interface.Restart(mode)
-        return str(job_path)
+        """Restart unit.
+        
+        @param mode: Must be one of fail, replace or isolate.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            job_path = self.__interface.Restart(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
     def start(self, mode):
-        job_path = self.__interface.Start(mode)
-        return str(job_path)
+        """Start unit.
+        
+        @param mode: Must be one of fail or replace.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            job_path = self.__interface.Start(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
     def stop(self, mode):
-        job_path = self.__interface.Stop(mode)
-        return str(job_path)
+        """Stop unit.
+        
+        @param mode:  Must be one of fail or replace.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: systemd.job.Job
+        """
+        try:
+            job_path = self.__interface.Stop(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
     def try_restart(self,mode):
-        job_path = self.__interface.TryRestart(mode)
-        return str(job_path)
+        """Try restart unit.
+        
+        @param mode: Must be one of "fail" or "replace.
+        
+        @raise SystemdError: Raised when mode is invalid.
+        
+        @rtype: L{systemd.job.Job}
+        """
+        try:
+            job_path = self.__interface.TryRestart(mode)
+            job = Job(job_path)
+            return job
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
 class UnitInfo(object):
     def __init__(self):
