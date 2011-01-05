@@ -20,6 +20,7 @@
 import dbus
 
 from systemd.property import Property
+from systemd.exceptions import SystemdError
 
 class Job(object):
     """Abstraction class to org.freedesktop.systemd1.Job interface"""
@@ -33,10 +34,9 @@ class Job(object):
             self.__proxy,
             'org.freedesktop.systemd1.Job',
         )
-        #self.__properties()
+        self.__properties()
 
     def __properties(self):
-        #TODO: Fix it, way Job interface not have properties
         interface = dbus.Interface(
             self.__proxy,
             'org.freedesktop.DBus.Properties')
@@ -47,7 +47,10 @@ class Job(object):
         setattr(self, 'properties', attr_property)
 
     def cancel(self):
-        self.__interface.Cancel()
+        try:
+            self.__interface.Cancel()
+        except dbus.exceptions.DBusException, error:
+            raise SystemdError(error)
 
 class JobInfo(object):
     def __init__(self):
