@@ -18,6 +18,8 @@
 #
 
 import dbus
+import dbus.mainloop.glib
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 from systemd.property import Property
 from systemd.exceptions import SystemdError
@@ -27,21 +29,31 @@ class Unit(object):
     """Abstraction class to org.freedesktop.systemd1.Unit interface"""
     def __init__(self, unit_path):
         self.__bus = dbus.SystemBus()
+
         self.__proxy = self.__bus.get_object(
             'org.freedesktop.systemd1',
-            unit_path,
-        )
+            unit_path,)
+
         self.__interface = dbus.Interface(
             self.__proxy,
-            'org.freedesktop.systemd1.Unit',
-        )
+            'org.freedesktop.systemd1.Unit',)
+
+        self.__properties_interface = dbus.Interface(
+            self.__proxy,
+            'org.freedesktop.DBus.Properties')
+
+        self.__properties_interface.connect_to_signal(
+            'PropertiesChanged',
+            self.__on_properties_changed)
+
+        self.__properties()
+
+    def __on_properties_changed(self, *args, **kargs):
         self.__properties()
 
     def __properties(self):
-        interface = dbus.Interface(
-            self.__proxy,
-            'org.freedesktop.DBus.Properties')
-        properties = interface.GetAll(self.__interface.dbus_interface)
+        properties = self.__properties_interface.GetAll(
+            self.__interface.dbus_interface)
         attr_property =  Property()
         for key, value in properties.items():
             setattr(attr_property, key, value)
@@ -184,16 +196,3 @@ class Unit(object):
             return job
         except dbus.exceptions.DBusException, error:
             raise SystemdError(error)
-
-class UnitInfo(object):
-    def __init__(self):
-        self.id = None
-        self.description = None
-        self.load_state = None
-        self.active_state = None
-        self.sub_state = None
-        self.following = None
-        self.unit_path = None
-        self.job_id = None
-        self.job_type = None
-        self.job_path = None

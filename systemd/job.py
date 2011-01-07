@@ -18,6 +18,8 @@
 #
 
 import dbus
+import dbus.mainloop.glib
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
 from systemd.property import Property
 from systemd.exceptions import SystemdError
@@ -34,13 +36,23 @@ class Job(object):
             self.__proxy,
             'org.freedesktop.systemd1.Job',
         )
+
+        self.__properties_interface = dbus.Interface(
+            self.__proxy,
+            'org.freedesktop.DBus.Properties')
+
+        self.__properties_interface.connect_to_signal(
+            'PropertiesChanged',
+            self.__on_properties_changed)
+
+        self.__properties()
+
+    def __on_properties_changed(self, *args, **kargs):
         self.__properties()
 
     def __properties(self):
-        interface = dbus.Interface(
-            self.__proxy,
-            'org.freedesktop.DBus.Properties')
-        properties = interface.GetAll(self.__interface.dbus_interface)
+        properties = self.__properties_interface.GetAll(
+            self.__interface.dbus_interface)
         attr_property =  Property()
         for key, value in properties.items():
             setattr(attr_property, key, value)
@@ -51,12 +63,3 @@ class Job(object):
             self.__interface.Cancel()
         except dbus.exceptions.DBusException, error:
             raise SystemdError(error)
-
-class JobInfo(object):
-    def __init__(self):
-        self.id = None
-        self.name = None
-        self.type = None
-        self.state = None
-        self.job_path = None
-        self.unit_path = None

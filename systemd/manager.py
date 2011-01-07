@@ -18,9 +18,11 @@
 #
 
 import dbus
+import dbus.mainloop.glib
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-from systemd.unit import Unit, UnitInfo
-from systemd.job import Job, JobInfo
+from systemd.unit import Unit
+from systemd.job import Job
 from systemd.property import Property
 from systemd.exceptions import SystemdError
 
@@ -31,16 +33,29 @@ class Manager(object):
         self.__proxy = self.__bus.get_object(
             'org.freedesktop.systemd1',
             '/org/freedesktop/systemd1')
+
         self.__interface = dbus.Interface(
             self.__proxy,
             'org.freedesktop.systemd1.Manager')
+
+        self.subscribe()
+
+        self.__properties_interface = dbus.Interface(
+            self.__proxy,
+            'org.freedesktop.DBus.Properties')
+
+        self.__properties_interface.connect_to_signal(
+            'PropertiesChanged',
+            self.__on_properties_changed)
+
+        self.__properties()
+
+    def __on_properties_changed(self, *args, **kargs):
         self.__properties()
 
     def __properties(self):
-        interface = dbus.Interface(
-            self.__proxy,
-            'org.freedesktop.DBus.Properties')
-        properties = interface.GetAll(self.__interface.dbus_interface)
+        properties = self.__properties_interface.GetAll(
+            self.__interface.dbus_interface)
         attr_property =  Property()
         for key, value in properties.items():
             setattr(attr_property, key, value)
@@ -365,6 +380,7 @@ class Manager(object):
         try:
             self.__interface.Subscribe()
         except dbus.exceptions.DBusException, error:
+            print error
             raise SystemdError(error)
 
     def try_restart_unit(self, name, mode):
