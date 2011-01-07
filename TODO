@@ -9,7 +9,7 @@ CODE
 
  * Pass some methods(__properties) to a more generic class(systemd.core.Core).
 
- * __properties methods of systemd.job.Job is with error.
+ * Filter signals and only update properties that realy was updated.
 
  * Improve the exceptions mechanism.
 
