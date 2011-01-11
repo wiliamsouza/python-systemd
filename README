@@ -28,6 +28,8 @@ crond.service
 LSB: run cron daemon
 ...
 
+>>> unit = manager.get_unit('crond.service')
+
 # crond is running
 >>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
 loaded active running
