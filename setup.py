@@ -26,7 +26,7 @@ for dirpath, dirnames, filenames in os.walk('systemd_dbus'):
             data_files.append(os.path.join(prefix, f))
 
 
-setup(name='python-systemd-dbus-dbus',
+setup(name='python-systemd-dbus',
       version=get_version().replace(' ', '-'),
       description='Systemd interfaces wrapper',
       author='Wiliam Souza',
