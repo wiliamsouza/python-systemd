@@ -2,6 +2,8 @@
 python-systemd
 ==============
 
+**Don't use this. Use the python-systemd bundled upstream.**
+
 python-systemd python wrapper for `systemd`_ system and session manager dbus
 interfaces.
 
