@@ -61,5 +61,5 @@ class Job(object):
     def cancel(self):
         try:
             self.__interface.Cancel()
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)

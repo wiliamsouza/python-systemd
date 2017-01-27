@@ -61,5 +61,5 @@ class Snapshot(object):
     def remove(self):
         try:
             self.__interface.Remove()
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
