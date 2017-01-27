@@ -20,8 +20,8 @@ List all units:
 
 ```
 >>> for unit in manager.list_units():
-...    print unit.properties.Id
-...    print unit.properties.Description
+...    print(unit.properties.Id)
+...    print(unit.properties.Description)
 ...
 nfs-server.service
 LSB: Kernel NFS server support
@@ -43,7 +43,7 @@ Get an unit:
 `crond` is running:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded active running
 ```
 
@@ -57,7 +57,7 @@ Let's stop `crond`:
 Is crond running? why I stop it!!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded active running
 ```
 
@@ -73,7 +73,7 @@ KeyboardInterrupt
 Now Unit properties is updated!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded inactive dead
 ```
 
@@ -87,7 +87,7 @@ Let's start `crond`:
 Remember we want o loop!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded inactive dead
 ```
 
@@ -102,6 +102,6 @@ KeyboardInterrupt
 Updated!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded active running
 ```
