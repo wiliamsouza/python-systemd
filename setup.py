@@ -1,7 +1,7 @@
 from distutils.core import setup
 import os
 
-from systemd import get_version
+from systemd_dbus import get_version
 
 
 # Compile the list of packages available, because distutils doesn't have
@@ -11,7 +11,7 @@ root_dir = os.path.dirname(__file__)
 if root_dir:
     os.chdir(root_dir)
 
-for dirpath, dirnames, filenames in os.walk('systemd'):
+for dirpath, dirnames, filenames in os.walk('systemd_dbus'):
     # Ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
         if dirname.startswith('.'): del dirnames[i]
@@ -26,20 +26,20 @@ for dirpath, dirnames, filenames in os.walk('systemd'):
             data_files.append(os.path.join(prefix, f))
 
 
-setup(name='python-systemd',
+setup(name='python-systemd-dbus',
       version=get_version().replace(' ', '-'),
       description='Systemd interfaces wrapper',
       author='Wiliam Souza',
       author_email='wiliam@mandriva.com',
       url='',
       download_url='',
-      package_dir={'systemd': 'systemd'},
+      package_dir={'systemd_dbus': 'systemd_dbus'},
       packages=packages,
-      package_data={'systemd': data_files},
+      package_data={'systemd_dbus': data_files},
       classifiers=['Development Status :: 1 - Planning',
                    'Intended Audience :: Developers',
                    'License :: ',
-		   'Operating System :: POSIX :: Linux',
+		           'Operating System :: POSIX :: Linux',
                    'Programming Language :: Python',
                    'Topic :: Libraries :: Python Modules',]
       )

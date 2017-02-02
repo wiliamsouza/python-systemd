@@ -1,14 +1,14 @@
 #
 # Copyright (c) 2010 Mandriva
 #
-# This file is part of python-systemd.
+# This file is part of python-systemd-dbus.
 #
-# python-systemd is free software; you can redistribute it and/or modify
+# python-systemd-dbus is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
 # published by the Free Software Foundation; either version 2.1 of
 # the License, or (at your option) any later version.
 #
-# python-systemd is distributed in the hope that it will be useful,
+# python-systemd-dbus is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
@@ -21,9 +21,9 @@ import dbus
 import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-from systemd.property import Property
-from systemd.exceptions import SystemdError
-from systemd.job import Job
+from systemd_dbus.property import Property
+from systemd_dbus.exceptions import SystemdError
+from systemd_dbus.job import Job
 
 class Unit(object):
     """Abstraction class to org.freedesktop.systemd1.Unit interface"""
@@ -69,12 +69,12 @@ class Unit(object):
         
         @raise SystemdError: Raised when who, mode or signal are invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             self.__interface.KillUnit(who, mode, signal)
-        except dbus.exceptions.DBusException, error:
-            print error
+        except dbus.exceptions.DBusException as error:
+            print(error)
             raise SystemdError(error)
 
     def reload(self, mode):
@@ -84,13 +84,13 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             job_path = self.__interface.Reload(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
 
 
@@ -102,13 +102,13 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             job_path = self.__interface.ReloadOrRestart(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
 
     def reload_or_try_restart(self, mode):
@@ -118,19 +118,19 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             job_path = self.__interface.ReloadOrTryRestart(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
 
     def reset_failed(self):
         try:
             self.__interface.ResetFailed()
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)        
 
     def restart(self, mode):
@@ -140,13 +140,13 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             job_path = self.__interface.Restart(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
 
     def start(self, mode):
@@ -156,13 +156,13 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             job_path = self.__interface.Start(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
 
     def stop(self, mode):
@@ -172,13 +172,13 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: systemd.job.Job
+        @rtype: systemd_dbus.job.Job
         """
         try:
             job_path = self.__interface.Stop(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)
 
     def try_restart(self,mode):
@@ -188,11 +188,11 @@ class Unit(object):
         
         @raise SystemdError: Raised when mode is invalid.
         
-        @rtype: L{systemd.job.Job}
+        @rtype: L{systemd_dbus.job.Job}
         """
         try:
             job_path = self.__interface.TryRestart(mode)
             job = Job(job_path)
             return job
-        except dbus.exceptions.DBusException, error:
+        except dbus.exceptions.DBusException as error:
             raise SystemdError(error)

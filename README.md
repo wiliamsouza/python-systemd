@@ -1,7 +1,7 @@
-python-systemd
-==============
+python-systemd-dbus
+===================
 
-python-systemd python wrapper for `systemd`_ system and session manager dbus
+python-systemd-dbus python wrapper for `systemd`_ system and session manager dbus
 interfaces.
 
 .. systemd: http://www.freedesktop.org/wiki/Software/systemd
@@ -12,7 +12,7 @@ Basic usage
 Import and create a `manager`:
 
 ```
->>> from systemd.manager import Manager
+>>> from systemd_dbus.manager import Manager
 >>> manager = Manager()
 ```
 
@@ -20,8 +20,8 @@ List all units:
 
 ```
 >>> for unit in manager.list_units():
-...    print unit.properties.Id
-...    print unit.properties.Description
+...    print(unit.properties.Id)
+...    print(unit.properties.Description)
 ...
 nfs-server.service
 LSB: Kernel NFS server support
@@ -43,7 +43,7 @@ Get an unit:
 `crond` is running:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded active running
 ```
 
@@ -51,13 +51,13 @@ Let's stop `crond`:
 
 ```
 >>> unit.stop('fail')
-<systemd.job.Job object at 0x7fa57ba03a90>
+<systemd_dbus.job.Job object at 0x7fa57ba03a90>
 ```
 
 Is crond running? why I stop it!!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded active running
 ```
 
@@ -73,7 +73,7 @@ KeyboardInterrupt
 Now Unit properties is updated!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded inactive dead
 ```
 
@@ -81,13 +81,13 @@ Let's start `crond`:
 
 ```
 >>> unit.start('fail')
-<systemd.job.Job object at 0x7fa57ba03950>
+<systemd_dbus.job.Job object at 0x7fa57ba03950>
 ```
 
 Remember we want o loop!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded inactive dead
 ```
 
@@ -102,6 +102,6 @@ KeyboardInterrupt
 Updated!:
 
 ```
->>> print unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState
+>>> print(unit.properties.LoadState, unit.properties.ActiveState, unit.properties.SubState)
 loaded active running
 ```

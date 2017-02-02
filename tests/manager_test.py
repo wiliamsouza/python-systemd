@@ -15,7 +15,7 @@ class ManagerTest(unittest.TestCase):
         self.assertRaises(error, callable, *args, **kwargs)
         try:
             callable(*args, **kwargs)
-        except error, e:
+        except error as e:
             self.assertEqual(message, str(e))
 
     def setUp(self):

@@ -1,14 +1,14 @@
 #
 # Copyright (c) 2010 Mandriva
 #
-# This file is part of python-systemd.
+# This file is part of python-systemd-dbus.
 #
-# python-systemd is free software; you can redistribute it and/or modify
+# python-systemd-dbus is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as
 # published by the Free Software Foundation; either version 2.1 of
 # the License, or (at your option) any later version.
 #
-# python-systemd is distributed in the hope that it will be useful,
+# python-systemd-dbus is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
@@ -21,8 +21,8 @@ import dbus
 import dbus.mainloop.glib
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-from systemd.property import Property
-from systemd.exceptions import SystemdError
+from systemd_dbus.property import Property
+from systemd_dbus.exceptions import SystemdError
 
 class Target(object):
     """Abstraction class to org.freedesktop.systemd1.Target interface"""
